@@ -1,5 +1,27 @@
+body {
+  background: url("images/gradient.jpg") no-repeat center center fixed;
+  -webkit-background: cover;
+  -moz-background: cover;
+  -o-background: cover;
+  background: cover;
+}
+
 .App {
   /* text-align: center; */
+}
+
+/* .appbar {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.appbar:hover {
+  opacity: 1;
+} */
+
+.active {
+  color: '#64ffda';
+  border-bottom: 2px solid #64ffda;
 }
 
 /* .App-logo {
