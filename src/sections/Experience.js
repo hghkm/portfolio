@@ -6,27 +6,30 @@ import {
     Grid2 as Grid,
     Stack,
     Chip,
+    Link
 } from '@mui/material';
 
-function About() {
+function Experience() {
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, maxWidth: { xs: '75%', xl: '1200px' } }}>
             <Typography variant="h3">Experience</Typography>
             <Divider />
             <br />
             <Grid container spacing={2}>
-                <Grid size={4}>
+                <Grid size={{xs: 12, md: 4}}>
                     <Typography variant="body1">
                         March 2024 - Present
                     </Typography>
                 </Grid>
-                <Grid size={8}>
+                <Grid size={{xs: 12, md: 8}}>
                     <Typography variant="h4">
                         JavaScript Developer
                     </Typography>
                     <Typography variant="h6">
-                        ImageCraft
+                        <Link href="https://imagecraft.art" color="secondary" target="_blank" rel="noopener noreferrer">
+                            ImageCraft
+                        </Link>
                     </Typography>
                     <Typography variant="body1">
                         Build, style and maintain foundational components used to construct application's user interface.
@@ -46,12 +49,12 @@ function About() {
             <br />
 
             <Grid container spacing={2}>
-                <Grid size={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                     <Typography variant="body1">
                         May 2024 - Present
                     </Typography>
                 </Grid>
-                <Grid size={8}>
+                <Grid size={{ xs: 12, md: 8 }}>
                     <Typography variant="h4">
                         Software Developer
                     </Typography>
@@ -74,17 +77,19 @@ function About() {
 
             <br />
             <Grid container spacing={2}>
-                <Grid size={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                     <Typography variant="body1">
                         April 2021 - June 2022
                     </Typography>
                 </Grid>
-                <Grid size={8}>
+                <Grid size={{ xs: 12, md: 8 }}>
                     <Typography variant="h4">
                         Software Engineer
                     </Typography>
                     <Typography variant="h6">
-                        Finicast
+                        <Link href="https://finicast.com" color="secondary" target="_blank" rel="noopener noreferrer">
+                            Finicast
+                        </Link>
                     </Typography>
                     <Typography variant="body1">
                         Implement new REST API endpoints for developer access to company data.
@@ -107,4 +112,4 @@ function About() {
 
 }
 
-export default About;
+export default Experience;

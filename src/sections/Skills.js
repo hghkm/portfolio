@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Box,
-    Divider,
     Typography,
     List,
     ListItem,
@@ -9,99 +8,73 @@ import {
     Grid2 as Grid,
 } from '@mui/material';
 
+const frontEndSkills = [ 'React', 'React Router', 'Redux/Redux Toolkit', 'Quill.js', 'Responsive UI/Design' ];
+const responsiveUI = [ 'Chakra UI', 'Reactstrap', 'Bootstrap' ];
+
+const backEndSkills = [ 'Node.js', 'Express.js', 'RESTful API', 'SQL', 'Axios', 'jsPDF' ];
+const versionControl = [ 'Github', 'Gitlab', 'Git' ];
+const testing = [ 'Jest', 'Puppeteer', 'React Testing Library', 'Jenkins', 'Gitlab CI/CD' ];
+
 function Skills() {
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, maxWidth: { xs: '75%', xl: '1200px' } }}>
             <Typography variant="h3">Skills</Typography>
             <br/>
             <Grid container spacing={2}>
-                <Grid size={6}>
+                <Grid item size={{ xs: 12, sm: 6, lg: 3 }}>
                     <Typography variant="h6">Frontend Development</Typography>
                     <List>
-                        <ListItem>
-                            <ListItemText primary="React"/>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText primary="React Router"/>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText primary="Redux/Redux Toolkit"/>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText primary="Quill.js"/>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText primary="Responsive UI"/>
-                        </ListItem>
+                        {frontEndSkills.map((skill, i) => (
+                            <ListItem key={i}>
+                                <ListItemText primary={skill}/>
+                            </ListItem>
+                        ))}
                         <List component="div" disablePadding sx={{ pl: 4 }}>
-                            <ListItem>
-                                <ListItemText primary="Chakra UI"/>
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText primary="Reactstrap"/>
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText primary="Bootstrap"/>
-                            </ListItem>
+                            {responsiveUI.map((ui, i) => (
+                                <ListItem key={i}>
+                                    <ListItemText primary={ui}/>
+                                </ListItem>
+                            ))}
                         </List>
                     </List>
+                </Grid>
 
+                <Grid item size={{ xs: 12, sm: 6, lg: 3 }}>
                     <Typography variant="h6">Backend Development</Typography>
                     <List>
-                        <ListItem>
-                            <ListItemText>Node.js</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>Express.js</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>RESTful API</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>SQL</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>Axios</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>jsPDF</ListItemText>
-                        </ListItem>
+                        {backEndSkills.map((skill, i) => (
+                            <ListItem key={i}>
+                                <ListItemText primary={skill}/>
+                            </ListItem>
+                        ))}
                     </List>
                 </Grid>
-
-                <Grid size={6}>
-                    <Typography variant="h6">Version Control</Typography>
-                    <List>
-                        <ListItem>
-                            <ListItemText>Github</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>Gitlab</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>Git</ListItemText>
-                        </ListItem>
-                    </List>
+                
+                <Grid item size={{ xs: 12, sm: 6, lg: 3 }}>
                     <Typography variant="h6">Testing & Deployment</Typography>
                     <List>
-                        <ListItem>
-                            <ListItemText>Jest</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>Puppeteer</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>React Testing Library</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>Jenkins</ListItemText>
-                        </ListItem>
+                        {testing.map((t, i) => (
+                            <ListItem key={i}>
+                                <ListItemText primary={t}/>
+                            </ListItem>
+                        ))}
                     </List>
                 </Grid>
+
+                <Grid item size={{ xs: 12, sm: 6, lg: 3 }}>
+                    <Typography variant="h6">Version Control</Typography>
+                    <List>
+                        {versionControl.map((v, i) => (
+                            <ListItem key={i}>
+                                <ListItemText primary={v}/>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Grid>
+
             </Grid>
 
-            <Divider />
         </Box>
     )
 

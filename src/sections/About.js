@@ -4,11 +4,11 @@ import { Box, Divider, Typography } from '@mui/material';
 function About() {
 
     return (
-        <Box>
+        <Box sx={{ flexGrow: 1, maxWidth: { xs: '75%', xl: '1200px' } }}>
             <Typography variant="h3">Hugh Kim</Typography>
             <br/>
             <Typography variant="h5">JavaScript Developer</Typography>
-            <Typography variant="body1">I build intuitive, scalable applications for the web.</Typography>
+            {/* <Typography variant="body1">I build intuitive, scalable applications for the web.</Typography> */}
             <Divider />
             <br/>
             <Typography variant="body1">

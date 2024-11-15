@@ -1,132 +1,139 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
   Toolbar,
-  Typography,
+  // Typography,
   Box,
-  Button,
-  Container,
+  Tabs,
+  Tab,
   ThemeProvider,
   CssBaseline,
-  styled
+  styled,
+  useMediaQuery
 } from '@mui/material';
-import { Link } from 'react-scroll';
+
+import { useInView } from 'react-intersection-observer';
 import { theme } from './theme';
 
 import './App.css';
+
+import { DownloadResume } from './components/Download';
+
+import { Sections } from './sections';
 import About from './sections/About';
 import Experience from './sections/Experience';
 import Skills from './sections/Skills';
 import Contact from './sections/Contact';
 
-const Section = styled(Box)(({ theme }) => ({
-  minHeight: '100vh',
-  display: 'flex',
-  // alignItems: 'center',
-  justifyContent: 'center',
-  padding: '30px 10px 0 10px',
-}));
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   position: 'sticky',
 }));
 
-const ScrollLink = ({ to, name, offset }) => (
-  <Link
-    to={to}
-    offset={-100}
-    spy={true}
-    hashSpy={true}
-    smooth={true}
-    duration={500}
-    activeClass='active'
-  >
-    <Button>{name}</Button>
-  </Link>
-)
+const StyledTabs = styled(Tabs)(({ theme }) => ({
+  scrollBehavior: 'smooth',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '0.8rem',
+    padding: '0 4px',
+  },
+}));
+
+function samePageLinkNavigation(e) {
+  if(
+    e.defaultPrevented
+    || e.button !== 0
+    || e.metaKey
+    || e.ctrlKey
+    || e.altKey
+    || e.shiftKey
+  ) { return false };
+  return true;
+}
+
+const LinkTab = (props) => {
+  return (
+    <Tab
+      component="a"
+      onClick={(event) => {
+        if( samePageLinkNavigation(event) ) {
+          event.preventDefault();
+        }
+      }}
+      aria-current={props.selected && 'section'}
+      {...props}
+    />
+  )
+}
+
+const sections = [
+  { id: 'about', label: 'About', component: About },
+  { id: 'experience', label: 'Experience', component: Experience },
+  { id: 'skills', label: 'Skills', component: Skills },
+  { id: 'contact', label: 'Contact', component: Contact }
+];
 
 function App() {
 
-    const aboutRef = useRef(null);
-    const experienceRef = useRef(null);
-    const skillsRef = useRef(null);
-    const contactRef = useRef(null);
+    const [ activeSection, setActiveSection ] = useState( 0 );
 
-    const [ offsets, setOffsets ] = useState({ about: 0, experience: 0, skills: 0, contact: 0 });
-    const [ zoom, setZoom ] = useState(window.devicePixelRatio);
-
-    const calculateOffsets = useCallback(() => {
-      const sectionRefs = {
-        about: aboutRef,
-        experience: experienceRef,
-        skills: skillsRef,
-        contact: contactRef,
+    const handleTabChange = ( e, newValue ) => {
+      if( e.type !== 'click' || ( e.type === 'click' && samePageLinkNavigation(e) ) ) {
+        document.getElementById( sections[newValue].id ).scrollIntoView({
+          behavior: 'smooth',
+        });
       };
-      const newOffsets = {};
-      Object.keys(sectionRefs).forEach((key) => {
-        const sectionElement = sectionRefs[key].current;
-        if (sectionElement) {
-          const sectionHeight = sectionElement.getBoundingClientRect().height;
-          newOffsets[key] = -(sectionHeight / 2); // Adjust offset as needed
-        }
-      });
+    };
 
-      setOffsets(newOffsets);
-    }, [])
+    const { ref, inView } = useInView({
+        threshold: 0,
+    });
 
-    useEffect(() => {
-      const handleResize = () => {
-        const newZoom = window.devicePixelRatio;
-        if( newZoom !== zoom ) {
-          setZoom(newZoom);
-          calculateOffsets();
-        }
+    const setInView = (inView, entry) => {
+      const id = entry.target.getAttribute('id');
+      if( inView ) {
+        setActiveSection( sections.map(section => section.id).indexOf(id) );
       };
+    };
 
-      window.addEventListener('resize', handleResize);
-      calculateOffsets();
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-
-    }, [calculateOffsets, zoom]);
+    const isXs = useMediaQuery(theme.breakpoints.down('sm'));
+    const greaterThanXl = useMediaQuery(theme.breakpoints.up('xl'));
 
     return (
         <div className="App">
             <CssBaseline/>
             <ThemeProvider theme={theme}>
-              <StyledAppBar className="appbar">
-                <Toolbar>
-                  <Typography variant="h6">Portfolio</Typography>
-                  <Box ml="auto">
-                    <ScrollLink to="about" name="About" offset={offsets.about}/>
-                    <ScrollLink to="experience" name="Experience" offset={offsets.experience}/>
-                    <ScrollLink to="skills" name="Skills" offset={offsets.skills}/>
-                    <ScrollLink to="contact" name="Contact" offset={offsets.contact}/>
-                  </Box>
-                </Toolbar>
-              </StyledAppBar>
+              {!greaterThanXl && (
+                <StyledAppBar className="appbar">
+                  <Toolbar>
+                    <Box mx="auto" width={isXs ? '100%' : 'auto'}>
+                      <StyledTabs
+                        value={activeSection}
+                        onChange={handleTabChange}
+                        indicatorColor={ 'primary'}
+                        textColor={ 'primary' }
+                        role='navigation'
+                        // variant={isMobile ? 'scrollable' : 'standard'}
+                        // scrollButtons={isMobile ? 'auto': false}
+                        // centered={!isMobile}
+                      >
+                        {sections.map(( section, index ) => (
+                          <LinkTab
+                            key={index}
+                            label={section.label}
+                            href={`#${section.id}`}
+                          />
+                        ))}
+                      </StyledTabs>
+                    </Box>
+                  </Toolbar>
+                </StyledAppBar>
+              )}
+              
+              <Box id="sections-wrapper" ref={ref}>
+                <Sections sections={sections} setInView={setInView}/>
+              </Box>
 
-              <Container>
-
-                  <Section id="about" ref={aboutRef}>
-                    <About />
-                  </Section>
-                
-                  <Section id="experience" ref={experienceRef}>
-                    <Experience />
-                  </Section>
-                
-                  <Section id="skills" ref={skillsRef}>
-                    <Skills />
-                  </Section>
-                
-                  <Section id="contact" ref={contactRef}>
-                    <Contact />
-                  </Section>
-
-              </Container>
+              <DownloadResume/>
 
             </ThemeProvider>
         </div>
